@@ -15,10 +15,7 @@
   - [Data Cleaning](#cleaning)
   - [Training Classifier](#training)
   - [Starting the Web App](#starting)
-- [Conclusion](#conclusion)
-- [Files](#files)
-- [Software Requirements](#sw)
-- [Credits and Acknowledgements](#credits)
+- [Required Libraries](#sw)
 
 ***
 
@@ -26,7 +23,7 @@
 
 ## 1. Project Overview
 
-In this project, we apply data science to analyze disaster data and classifies disaster messages.
+In this project, we apply data science to analyze disaster data and classify disaster messages.
 
 _data_ directory contains a data set which are real messages that were sent during disaster events. A machine learning pipeline has been created to categorize these events so that appropriate disaster relief agency can be reached out for help.
 
@@ -121,7 +118,7 @@ python run.py
 
 This will start the web app and will direct you to a URL where you can enter messages and get classification results for it.
 
-<a id='sw'></a
+<a id='sw'></a>
 
 
 ## 4. Required Libraries
@@ -129,4 +126,5 @@ This will start the web app and will direct you to a URL where you can enter mes
 Besides the libraries included in the Anaconda distribution for Python 3.6 the following libraries have been included in this project:
 
 *`nltk`
+
 *`sqlalchemy`
