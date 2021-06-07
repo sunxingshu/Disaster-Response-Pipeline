@@ -54,7 +54,7 @@ def load_data(database_filepath):
     """
     
     engine = create_engine('sqlite:///' + database_filepath)
-    df = pd.read_sql_table('InsertTableName',engine)
+    df = pd.read_sql_table('Disaster-Response',engine)
     
     #Remove child alone as it has all zeros only
     df = df.drop(['child_alone'],axis=1)
@@ -64,9 +64,14 @@ def load_data(database_filepath):
     df['related']=df['related'].map(lambda x: 1 if x == 2 else x)
     
     X = df['message']
-    y = df.drop(['message', 'genre', 'id', 'original'], axis = 1).applymap(int)
+    y = df.iloc[:,:-4]
+    
+    
     
     category_names = y.columns # This will be used for visualization purpose
+    
+    print(y.head())
+    
     return X, y, category_names
 
 class StartingVerbExtractor(BaseEstimator, TransformerMixin):
@@ -137,8 +142,8 @@ def build_model():
     pipeline = Pipeline([
             ('features', FeatureUnion([
 
-                ('text_pipeline', Pipeline([
-                    ('count_vectorizer', CountVectorizer(tokenizer=tokenize)),
+                ('text', Pipeline([
+                    ('vect', CountVectorizer(tokenizer=tokenize)),
                     ('tfidf_transformer', TfidfTransformer())
                 ])),
 
@@ -147,15 +152,15 @@ def build_model():
                 ])),          
             ])),
 
-            ('classifier', MultiOutputClassifier(AdaBoostClassifier()))
+            ('classifier', MultiOutputClassifier(RandomForestClassifier()))
         ])
     
     # pipeline1.get_params().keys()
-    parameters_grid = {'classifier__estimator__learning_rate': [0.02],
-              'classifier__estimator__n_estimators': [5, 10]}
-
+    parameters_grid = {'features__text__vect__ngram_range':[(1,2),(2,2)],
+                       'classifier__estimator__n_estimators':[50, 100]
+                      }
     #parameters_grid = {'classifier__estimator__n_estimators': [10, 20, 40]}
-    model = GridSearchCV(pipeline, param_grid= parameters_grid, scoring = 'f1_micro', verbose =7)
+    model = GridSearchCV(pipeline, param_grid= parameters_grid, verbose =7)
     return model
     
 
