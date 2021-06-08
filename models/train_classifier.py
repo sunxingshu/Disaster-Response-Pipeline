@@ -56,12 +56,6 @@ def load_data(database_filepath):
     engine = create_engine('sqlite:///' + database_filepath)
     df = pd.read_sql_table('Disaster-Response',engine)
     
-    #Remove child alone as it has all zeros only
-    df = df.drop(['child_alone'],axis=1)
-    
-    # Given value 2 in the related field are neglible so it could be error. Replacing 2 with 1 to consider it a valid response.
-    # Alternatively, we could have assumed it to be 0 also. In the absence of information I have gone with majority class.
-    df['related']=df['related'].map(lambda x: 1 if x == 2 else x)
     
     X = df['message']
     y = df.iloc[:,:-4]
@@ -165,6 +159,16 @@ def build_model():
     
 
 def evaluate_model(model, X_test, Y_test, category_names):
+    
+    """
+    Evaluate the model performance
+    
+    Arguments:
+        model -> trained NLP classification pipeline
+        X_test -> X test data
+        Y_test -> Y test data
+        category_names -> The name of each category
+    """
     y_prediction_test = model.predict(X_test)
 
     # Print classification report on test data

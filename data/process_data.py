@@ -9,6 +9,18 @@ import seaborn as sns
 from sqlalchemy import create_engine
 
 def load_data(messages_filepath, categories_filepath):
+    """
+    load the data
+    
+    This function loads the data file and return a DataFrame
+    
+    Arguments:
+        messages_filepath -> path to the message csv file
+        categories_filepath -> path to the categories csv file
+    Output:
+        df -> Output DataFrame File
+    """    
+    
     messages = pd.read_csv(messages_filepath)
     categories = pd.read_csv(categories_filepath)
     
@@ -27,14 +39,39 @@ def load_data(messages_filepath, categories_filepath):
     return df
 
 def clean_data(df):
-    df.drop_duplicates(inplace=True)
+    """
+    Clean the data
     
+    This function cleans the data
+    
+    Arguments:
+        df -> Input DataFrame File
+    Output:
+        df -> Output DataFrame File
+    """      
+    df.drop_duplicates(inplace=True)
+    #Remove child alone as it has all zeros only
+    df = df.drop(['child_alone'],axis=1)
+    
+    # Given value 2 in the related field are neglible so it could be error. Replacing 2 with 1 to consider it a valid response.
+    # Alternatively, we could have assumed it to be 0 also. In the absence of information I have gone with majority class.
+    df.iloc[:,:-4] = df.iloc[:,:-4].applymap(int)
+    df['related']=df['related'].map(lambda x: 1 if x == 2 else x)
     return df
 
 
 def save_data(df, database_filename):
+    """
+    Save the data
+    
+    This function saves the data file e
+    
+    Arguments:
+        df -> Input DataFrame File 
+        database_filename -> database file name
+    """       
     engine = create_engine('sqlite:///' + database_filename)
-    df.to_sql('Disaster-Response', engine, index=False)  
+    df.to_sql('Disaster-Response', engine, index=False,if_exists='replace')  
 
 
 def main():

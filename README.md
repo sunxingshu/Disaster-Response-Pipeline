@@ -47,6 +47,12 @@ File _data/process_data.py_ contains data cleaning pipeline that:
 - Cleans the data
 - Stores it in a **SQLite database**
 
+![Intro Pic](screenshots/genre.png)
+As we can tell from the above picture, alsmot half of the genre is news, greater than both direct and social.
+
+![Intro Pic](screenshots/related.png)
+Also, most of the messages are related.
+
 <a id='ml_pipeline'></a>
 
 ### 2.2. ML Pipeline
