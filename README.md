@@ -142,4 +142,3 @@ Besides the libraries included in the Anaconda distribution for Python 3.6 the f
 ## 5. Acknowledgements
 
 * [Udacity](https://www.udacity.com/) for providing this learning opportunity.
-* [Figure Eight](https://www.figure-eight.com/) for providing the relevant dataset to train the model
